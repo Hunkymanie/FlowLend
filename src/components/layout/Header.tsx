@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { useState } from 'react'
+import { WalletConnection } from '../ui/WalletConnection'
 
 export function Header() {
   const { isConnected, address } = useAccount()
@@ -59,12 +60,9 @@ export function Header() {
                 </button>
               </div>
             ) : (
-              <button
-                onClick={() => connect({ connector: connectors[0] })}
-                className="btn-primary px-3 py-2 text-sm"
-              >
+              <WalletConnection className="btn-primary px-3 py-2 text-sm">
                 Connect Wallet
-              </button>
+              </WalletConnection>
             )}
           </div>
 
@@ -134,15 +132,11 @@ export function Header() {
                   </button>
                 </div>
               ) : (
-                <button
-                  onClick={() => {
-                    connect({ connector: connectors[0] })
-                    setMobileMenuOpen(false)
-                  }}
-                  className="w-full btn-primary px-4 py-3 text-sm"
-                >
-                  Connect Wallet
-                </button>
+                <div onClick={() => setMobileMenuOpen(false)}>
+                  <WalletConnection className="w-full btn-primary px-4 py-3 text-sm">
+                    Connect Wallet
+                  </WalletConnection>
+                </div>
               )}
             </div>
           </div>

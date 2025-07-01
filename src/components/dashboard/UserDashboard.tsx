@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useAccount, useBalance, useConnect, useDisconnect } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { formatEther } from 'viem'
+import { useRouter } from 'next/navigation'
+import { WalletConnection } from '../ui/WalletConnection'
 
 export function UserDashboard() {
   const { isConnected, address } = useAccount()
@@ -12,8 +14,135 @@ export function UserDashboard() {
   })
   const { connect, connectors } = useConnect()
   const { disconnect } = useDisconnect()
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState<'overview' | 'borrowed' | 'lent' | 'analytics' | 'collateral'>('overview')
   const [timeframe, setTimeframe] = useState<'24h' | '7d' | '30d' | '1y'>('30d')
+  const [isLoading, setIsLoading] = useState(false)
+
+  // Functions for handling button actions
+  const handleRequestLoan = () => {
+    router.push('/borrow')
+  }
+
+  const handleFundLoan = () => {
+    router.push('/lend')
+  }
+
+  const handleAddCollateral = () => {
+    setActiveTab('collateral')
+  }
+
+  const handleDepositCollateral = async () => {
+    // Mock deposit functionality with loading state
+    setIsLoading(true)
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      alert('Collateral deposited successfully! This would integrate with smart contracts in production.')
+    } catch (error) {
+      alert('Error depositing collateral. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleWithdrawCollateral = async () => {
+    // Mock withdraw functionality with loading state
+    setIsLoading(true)
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      alert('Collateral withdrawn successfully! This would integrate with smart contracts in production.')
+    } catch (error) {
+      alert('Error withdrawing collateral. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleUseMax = (type: 'deposit' | 'withdraw') => {
+    // Mock use max functionality
+    alert(`Use max ${type} functionality would set the maximum available amount`)
+  }
+
+  const handleRepayLoan = (loanId: number) => {
+    // Navigate to payment page with loan ID
+    router.push(`/payment?loanId=${loanId}`)
+  }
+
+  const handleExtendLoan = (loanId: number) => {
+    // Mock extend loan functionality
+    alert(`Extend loan #${loanId} functionality would be implemented here`)
+  }
+
+  const handleWithdrawEarnings = (loanId: number) => {
+    // Mock withdraw earnings functionality
+    alert(`Withdraw earnings from loan #${loanId} functionality would be implemented here`)
+  }
+
+  // Additional handlers for enhanced interactivity
+  const handleMonitorLoan = (loanId: number) => {
+    alert(`Opening loan monitoring dashboard for loan #${loanId}`)
+  }
+
+  const handleContactBorrower = (loanId: number) => {
+    alert(`Opening communication interface for loan #${loanId}`)
+  }
+
+  const handleViewDetails = (loanId: number, type: 'borrowed' | 'lent') => {
+    alert(`Viewing detailed information for ${type} loan #${loanId}`)
+  }
+
+  const handleViewReceipt = (loanId: number) => {
+    alert(`Displaying receipt for completed loan #${loanId}`)
+  }
+
+  // Function to get filtered data based on timeframe
+  const getFilteredData = () => {
+    // Create different activity sets for each timeframe to demonstrate filtering
+    const allActivities = [
+      // 24h activities
+      { type: 'lend', amount: '1.5 ETH', action: 'Funded loan request', time: '2 hours ago', status: 'success', timeframe: '24h' },
+      { type: 'repay', amount: '0.08 ETH', action: 'Loan payment received', time: '6 hours ago', status: 'success', timeframe: '24h' },
+      { type: 'collateral', amount: '0.5 ETH', action: 'Collateral added', time: '12 hours ago', status: 'success', timeframe: '24h' },
+      
+      // 7d activities (includes 24h)
+      { type: 'borrow', amount: '1.2 ETH', action: 'New loan approved', time: '2 days ago', status: 'success', timeframe: '7d' },
+      { type: 'lend', amount: '2.0 ETH', action: 'Funded loan request', time: '3 days ago', status: 'success', timeframe: '7d' },
+      { type: 'repay', amount: '0.15 ETH', action: 'Interest payment received', time: '5 days ago', status: 'success', timeframe: '7d' },
+      
+      // 30d activities (includes 7d and 24h)
+      { type: 'collateral', amount: '3.0 ETH', action: 'Large collateral deposit', time: '2 weeks ago', status: 'success', timeframe: '30d' },
+      { type: 'warning', amount: '', action: 'Health factor below 1.5', time: '3 weeks ago', status: 'warning', timeframe: '30d' },
+      { type: 'lend', amount: '5.0 ETH', action: 'Major loan funding', time: '4 weeks ago', status: 'success', timeframe: '30d' },
+      
+      // 1y activities (includes all)
+      { type: 'borrow', amount: '10.0 ETH', action: 'First loan approved', time: '3 months ago', status: 'success', timeframe: '1y' },
+      { type: 'collateral', amount: '15.0 ETH', action: 'Initial collateral deposit', time: '6 months ago', status: 'success', timeframe: '1y' },
+    ]
+
+    // Filter activities based on selected timeframe
+    let filteredActivities = []
+    if (timeframe === '24h') {
+      filteredActivities = allActivities.filter(activity => activity.timeframe === '24h')
+    } else if (timeframe === '7d') {
+      filteredActivities = allActivities.filter(activity => ['24h', '7d'].includes(activity.timeframe))
+    } else if (timeframe === '30d') {
+      filteredActivities = allActivities.filter(activity => ['24h', '7d', '30d'].includes(activity.timeframe))
+    } else { // 1y
+      filteredActivities = allActivities
+    }
+
+    const baseData = {
+      portfolioValue: {
+        total: balance ? formatEther(balance.value) : '12.8',
+        change24h: timeframe === '24h' ? '+2.3%' : timeframe === '7d' ? '+5.1%' : timeframe === '30d' ? '+12.7%' : '+45.2%',
+        changeValue: timeframe === '24h' ? '+0.29 ETH' : timeframe === '7d' ? '+0.61 ETH' : timeframe === '30d' ? '+1.45 ETH' : '+4.12 ETH'
+      },
+      recentActivity: filteredActivities.slice(0, 5) // Show max 5 activities
+    }
+    return baseData
+  }
 
   if (!isConnected) {
     return (
@@ -29,12 +158,9 @@ export function UserDashboard() {
             Connect your wallet to access your personalized dashboard and manage your loans, 
             track earnings, and monitor your DeFi portfolio.
           </p>
-          <button
-            onClick={() => connect({ connector: injected() })}
-            className="w-full sm:w-auto btn-primary px-6 sm:px-8 py-3"
-          >
+          <WalletConnection className="w-full sm:w-auto btn-primary px-6 sm:px-8 py-3">
             Connect Wallet
-          </button>
+          </WalletConnection>
           
           <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-200">
             <div className="grid grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm text-gray-500">
@@ -68,6 +194,9 @@ export function UserDashboard() {
       </div>
     )
   }
+
+  // Get filtered data based on current timeframe
+  const filteredData = getFilteredData()
 
   // Mock comprehensive data for professional DeFi dashboard
   const mockData = {
@@ -182,13 +311,7 @@ export function UserDashboard() {
         { month: 'Jan', earnings: 0.05, borrowed: 3.7, lent: 4.3 }
       ]
     },
-    recentActivity: [
-      { type: 'lend', amount: '1.5 ETH', action: 'Funded loan request', time: '2 hours ago', status: 'success' },
-      { type: 'repay', amount: '0.08 ETH', action: 'Loan payment received', time: '1 day ago', status: 'success' },
-      { type: 'borrow', amount: '1.2 ETH', action: 'New loan approved', time: '3 days ago', status: 'success' },
-      { type: 'collateral', amount: '2.0 ETH', action: 'Collateral deposited', time: '5 days ago', status: 'success' },
-      { type: 'warning', amount: '', action: 'Health factor below 1.5', time: '1 week ago', status: 'warning' }
-    ]
+    recentActivity: filteredData.recentActivity
   }
 
   return (
@@ -205,13 +328,13 @@ export function UserDashboard() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
             <div className="text-center sm:text-right">
               <div className="text-2xl sm:text-3xl font-bold text-primary-600">
-                ${(parseFloat(mockData.portfolioValue.total) * 1700).toLocaleString()}
+                ${(parseFloat(filteredData.portfolioValue.total) * 1700).toLocaleString()}
               </div>
               <div className="flex items-center justify-center sm:justify-end text-sm text-green-600 mt-1">
                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
                 </svg>
-                {mockData.portfolioValue.change24h} ({mockData.portfolioValue.changeValue})
+                {filteredData.portfolioValue.change24h} ({filteredData.portfolioValue.changeValue})
               </div>
             </div>
             {!isConnected ? (
@@ -452,7 +575,10 @@ export function UserDashboard() {
                 <div className="card">
                   <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
                   <div className="space-y-3">
-                    <button className="w-full btn-primary text-left flex items-center justify-between">
+                    <button 
+                      onClick={handleRequestLoan}
+                      className="w-full btn-primary text-left flex items-center justify-between"
+                    >
                       <span className="flex items-center">
                         <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 9H14V4H5V21H19V9Z"/>
@@ -463,7 +589,10 @@ export function UserDashboard() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </button>
-                    <button className="w-full btn-secondary text-left flex items-center justify-between">
+                    <button 
+                      onClick={handleFundLoan}
+                      className="w-full btn-secondary text-left flex items-center justify-between"
+                    >
                       <span className="flex items-center">
                         <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 9H14V4H5V21H19V9Z"/>
@@ -474,7 +603,10 @@ export function UserDashboard() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </button>
-                    <button className="w-full btn-outline text-left flex items-center justify-between">
+                    <button 
+                      onClick={handleAddCollateral}
+                      className="w-full btn-outline text-left flex items-center justify-between"
+                    >
                       <span>🛡️ Add Collateral</span>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -515,7 +647,10 @@ export function UserDashboard() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">Your Borrowed Loans</h3>
-              <button className="btn-primary">
+              <button 
+                onClick={handleRequestLoan}
+                className="btn-primary"
+              >
                 + Request New Loan
               </button>
             </div>
@@ -588,9 +723,24 @@ export function UserDashboard() {
 
                 <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                   <div className="flex space-x-3">
-                    <button className="btn-primary">Make Payment</button>
-                    <button className="btn-secondary">Add Collateral</button>
-                    <button className="btn-outline">View Details</button>
+                    <button 
+                      onClick={() => handleRepayLoan(loan.id)}
+                      className="btn-primary"
+                    >
+                      Make Payment
+                    </button>
+                    <button 
+                      onClick={handleAddCollateral}
+                      className="btn-secondary"
+                    >
+                      Add Collateral
+                    </button>
+                    <button 
+                      onClick={() => handleViewDetails(loan.id, 'borrowed')}
+                      className="btn-outline"
+                    >
+                      View Details
+                    </button>
                   </div>
                   <div className="text-sm text-gray-500">
                     Loan ID: {loan.id}
@@ -612,7 +762,12 @@ export function UserDashboard() {
                   <option>Completed</option>
                   <option>At Risk</option>
                 </select>
-                <button className="btn-primary w-full sm:w-auto">+ Browse Loans</button>
+                <button 
+                  onClick={handleFundLoan}
+                  className="btn-primary w-full sm:w-auto"
+                >
+                  + Browse Loans
+                </button>
               </div>
             </div>
 
@@ -710,14 +865,34 @@ export function UserDashboard() {
                   <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                     {loan.status === 'Active' && (
                       <>
-                        <button className="btn-secondary w-full sm:w-auto">Monitor Loan</button>
-                        <button className="btn-outline w-full sm:w-auto">Contact Borrower</button>
+                        <button 
+                          onClick={() => handleMonitorLoan(loan.id)}
+                          className="btn-secondary w-full sm:w-auto"
+                        >
+                          Monitor Loan
+                        </button>
+                        <button 
+                          onClick={() => handleContactBorrower(loan.id)}
+                          className="btn-outline w-full sm:w-auto"
+                        >
+                          Contact Borrower
+                        </button>
                       </>
                     )}
                     {loan.status === 'Completed' && (
-                      <button className="btn-outline w-full sm:w-auto">View Receipt</button>
+                      <button 
+                        onClick={() => handleViewReceipt(loan.id)}
+                        className="btn-outline w-full sm:w-auto"
+                      >
+                        View Receipt
+                      </button>
                     )}
-                    <button className="btn-outline w-full sm:w-auto">View Details</button>
+                    <button 
+                      onClick={() => handleViewDetails(loan.id, 'lent')}
+                      className="btn-outline w-full sm:w-auto"
+                    >
+                      View Details
+                    </button>
                   </div>
                   <div className="text-sm text-gray-500 text-center sm:text-right">
                     Loan ID: {loan.id}
@@ -897,7 +1072,12 @@ export function UserDashboard() {
                       </div>
                       <div className="flex justify-between text-sm text-gray-500 mt-1">
                         <span>Available: {balance ? formatEther(balance.value) : '0'} ETH</span>
-                        <button className="text-primary-600 hover:text-primary-700">Use Max</button>
+                        <button 
+                          onClick={() => handleUseMax('deposit')}
+                          className="text-primary-600 hover:text-primary-700"
+                        >
+                          Use Max
+                        </button>
                       </div>
                     </div>
                     <div className="bg-blue-50 p-4 rounded-lg">
@@ -912,8 +1092,12 @@ export function UserDashboard() {
                         </div>
                       </div>
                     </div>
-                    <button className="btn-primary w-full">
-                      Deposit Collateral
+                    <button 
+                      onClick={handleDepositCollateral}
+                      disabled={isLoading}
+                      className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isLoading ? 'Processing...' : 'Deposit Collateral'}
                     </button>
                   </div>
                 </div>
@@ -954,7 +1138,12 @@ export function UserDashboard() {
                       </div>
                       <div className="flex justify-between text-sm text-gray-500 mt-1">
                         <span>Available: {mockData.collateral.available} ETH</span>
-                        <button className="text-primary-600 hover:text-primary-700">Use Max</button>
+                        <button 
+                          onClick={() => handleUseMax('withdraw')}
+                          className="text-primary-600 hover:text-primary-700"
+                        >
+                          Use Max
+                        </button>
                       </div>
                     </div>
                     <div className="bg-yellow-50 p-4 rounded-lg">
@@ -969,8 +1158,12 @@ export function UserDashboard() {
                         </div>
                       </div>
                     </div>
-                    <button className="btn-secondary w-full">
-                      Withdraw Collateral
+                    <button 
+                      onClick={handleWithdrawCollateral}
+                      disabled={isLoading}
+                      className="btn-secondary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isLoading ? 'Processing...' : 'Withdraw Collateral'}
                     </button>
                   </div>
                 </div>

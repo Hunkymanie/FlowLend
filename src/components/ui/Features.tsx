@@ -69,40 +69,40 @@ export function Features() {
   ]
 
   return (
-    <section className="py-12 sm:py-16 lg:py-24 bg-white">
+    <section className="py-6 sm:py-8 lg:py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
             Advanced DeFi Features
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
+          <p className="text-sm sm:text-base text-gray-600 max-w-lg sm:max-w-xl mx-auto leading-relaxed px-4 sm:px-0">
             Experience institutional-grade DeFi lending with cutting-edge technology, 
             professional tools, and uncompromising security standards.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
           {features.map((feature, index) => (
-            <div key={index} className={`card bg-gradient-to-br hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group p-4 sm:p-6 ${
+            <div key={index} className={`card bg-gradient-to-br hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group p-3 sm:p-4 ${
               feature.color === 'emerald' ? 'from-emerald-50 to-emerald-100 border-emerald-200' :
               'from-teal-50 to-teal-100 border-teal-200'
             }`}>
-              <div className="flex items-start justify-between mb-4 sm:mb-6">
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 ${
+              <div className="flex items-start justify-between mb-3 sm:mb-4">
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 ${
                   feature.color === 'emerald' ? 'bg-emerald-600' : 'bg-teal-600'
                 }`}>
                   {feature.icon}
                 </div>
-                <div className={`px-2 sm:px-3 py-1 rounded-full text-xs font-semibold ${
+                <div className={`px-2 py-1 rounded-full text-xs font-semibold ${
                   feature.color === 'emerald' ? 'bg-emerald-100 text-emerald-600' : 'bg-teal-100 text-teal-600'
                 }`}>
                   {feature.stats}
                 </div>
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-gray-800 transition-colors">
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-gray-800 transition-colors">
                 {feature.title}
               </h3>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors">
+              <p className="text-sm text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors">
                 {feature.description}
               </p>
             </div>
@@ -110,19 +110,19 @@ export function Features() {
         </div>
         
         {/* Enhanced CTA Section */}
-        <div className="mt-12 sm:mt-16 lg:mt-20 text-center">
-          <div className="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 text-white">
-            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4">
+        <div className="mt-8 sm:mt-10 lg:mt-12 text-center">
+          <div className="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 text-white">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3">
               Ready to Experience the Future of Finance?
             </h3>
-            <p className="text-base sm:text-lg lg:text-xl text-emerald-100 mb-6 sm:mb-8 max-w-lg sm:max-w-xl lg:max-w-2xl mx-auto px-4 sm:px-0">
+            <p className="text-sm sm:text-base text-emerald-100 mb-4 sm:mb-6 max-w-md sm:max-w-lg mx-auto px-4 sm:px-0">
               Join the DeFi revolution with FlowLend's professional-grade lending platform.
             </p>
-            <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:gap-4 justify-center px-4 sm:px-0">
-              <button className="w-full sm:w-auto bg-white text-primary-600 font-semibold py-3 px-6 sm:px-8 rounded-lg sm:rounded-xl hover:bg-gray-50 transition-colors shadow-lg">
+            <div className="flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:gap-3 justify-center px-4 sm:px-0">
+              <button className="w-full sm:w-auto bg-white text-primary-600 font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-gray-50 transition-colors shadow-lg text-sm sm:text-base">
                 Start Lending
               </button>
-              <button className="w-full sm:w-auto border-2 border-white text-white font-semibold py-3 px-6 sm:px-8 rounded-lg sm:rounded-xl hover:bg-white hover:text-primary-600 transition-colors">
+              <button className="w-full sm:w-auto border-2 border-white text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-white hover:text-primary-600 transition-colors text-sm sm:text-base">
                 Get a Loan
               </button>
             </div>

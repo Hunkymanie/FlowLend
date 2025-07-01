@@ -47,31 +47,31 @@ export function Stats() {
   ]
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-white">
+    <section className="py-6 sm:py-8 lg:py-12 bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
             Platform <span className="gradient-text">Statistics</span>
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 max-w-xl sm:max-w-2xl mx-auto px-4 sm:px-0">
+          <p className="text-sm sm:text-base text-gray-600 max-w-lg sm:max-w-xl mx-auto px-4 sm:px-0">
             Real-time metrics showcasing the growth and performance of our decentralized lending ecosystem
           </p>
         </div>
         
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
-              <div className="bg-gray-50 rounded-lg p-3 sm:p-4 lg:p-6 hover:shadow-lg transition-shadow duration-300">
-                <div className="flex justify-center mb-2 sm:mb-3 lg:mb-4 text-primary-600">
-                  <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8">
+              <div className="bg-gray-50 rounded-lg p-2 sm:p-3 lg:p-4 hover:shadow-lg transition-shadow duration-300">
+                <div className="flex justify-center mb-1 sm:mb-2 lg:mb-3 text-primary-600">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7">
                     {stat.icon}
                   </div>
                 </div>
-                <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-primary-600 mb-1 sm:mb-2">
+                <div className="text-base sm:text-lg lg:text-xl font-bold text-primary-600 mb-1">
                   {stat.value}
                 </div>
-                <div className="text-gray-600 mb-1 text-xs sm:text-sm lg:text-base">{stat.label}</div>
-                <div className="text-xs sm:text-sm text-secondary-600 font-medium">
+                <div className="text-gray-600 mb-1 text-xs sm:text-sm">{stat.label}</div>
+                <div className="text-xs text-secondary-600 font-medium">
                   {stat.change} from last month
                 </div>
               </div>
