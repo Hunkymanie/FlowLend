@@ -38,11 +38,8 @@ export function WalletConnection({ className = "btn-primary", children = "Connec
       if (hasWallet) {
         connect({ connector: injected() })
       } else {
-        // Fallback to WalletConnect for mobile
-        const walletConnectConnector = connectors.find(c => c.id === 'walletConnect')
-        if (walletConnectConnector) {
-          connect({ connector: walletConnectConnector })
-        }
+        // Show mobile instructions if no wallet is available
+        setShowMobileInstructions(true)
       }
     } catch (error) {
       console.error('Failed to connect wallet:', error)
@@ -112,15 +109,13 @@ export function WalletConnection({ className = "btn-primary", children = "Connec
                   </p>
                   <button 
                     onClick={() => {
-                      const walletConnectConnector = connectors.find(c => c.id === 'walletConnect')
-                      if (walletConnectConnector) {
-                        connect({ connector: walletConnectConnector })
-                        setShowMobileInstructions(false)
-                      }
+                      // For now, just show a message instead of using WalletConnect
+                      alert('WalletConnect integration will be available in the next update. Please use MetaMask mobile browser for now.')
+                      setShowMobileInstructions(false)
                     }}
                     className="btn-primary text-xs w-full"
                   >
-                    Try WalletConnect
+                    Coming Soon - WalletConnect
                   </button>
                 </div>
               </div>

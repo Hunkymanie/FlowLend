@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'FlowLend Team' }],
   creator: 'FlowLend',
   publisher: 'FlowLend',
+  metadataBase: new URL('https://flowlend.app'),
   formatDetection: {
     email: false,
     address: false,
@@ -46,11 +47,12 @@ export const metadata: Metadata = {
     description: 'A modern decentralized lending platform built on Ethereum',
     images: ['/apple-icon'],
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
   themeColor: '#059669',
 }
 
